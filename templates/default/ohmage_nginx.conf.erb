@@ -1,0 +1,62 @@
+upstream ohmage {
+  server 127.0.0.1:8080 fail_timeout=10s;
+}
+upstream ocpu {
+  server ocpu.ohmage.org fail_timeout=10s;
+}
+
+##LISTEN ON HTTPS##
+server {
+        listen 80;
+        #listen 443;
+        #ssl on;
+        #ssl_certificate /etc/ssl/certs/cert_file;
+        #ssl_certificate_key /etc/ssl/private/key_file;
+        root /var/www/;
+        index index.html MobilizeWeb.html;
+
+        #enable if read-onlying ohmage
+        #include includes/ro-ohmage;
+
+        #proxy ohmageServer requests to local tomcat.
+        location /app {
+         proxy_pass http://ohmage;
+         proxy_read_timeout  600s;
+         proxy_set_header X-Real-IP $remote_addr;
+         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header        Host $http_host;
+        }
+
+        location /password {
+         proxy_pass http://makeagoodpassword.com/password/;
+        }
+
+        #deny access to legacy tomcat servlet dirs..and any .git dir
+        location ~ /\WEB-INF {
+                deny all;
+        }
+        location ~ /\META-INF {
+                deny all;
+        }
+        location ~ /\.git {
+                deny all;
+        }
+
+        location /ocpu {
+          proxy_pass http://ocpu/ocpu;
+        }
+
+        location /navbar/plotapp {
+          proxy_pass http://ocpu/ocpu/library/plotbuilder/www;
+        }
+
+        location /webapps/plotapp {
+          proxy_pass http://ocpu/ocpu/library/plotbuilder/www;
+        }
+
+}
+##REDIRECT ALL HTTP REQUESTS TO HTTPS##
+#server {
+#        listen 80;
+#        return 301 https://$host$request_uri;
+#}
