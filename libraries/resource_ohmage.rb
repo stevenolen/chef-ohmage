@@ -14,9 +14,12 @@ class Chef
       attribute :db_name, kind_of: String, required: true
       attribute :db_user, kind_of: String, required: true
       attribute :db_password, kind_of: String, required: true
-      attribute :tomcat_server, kind_of: String, default: 'tomcat7'
+      attribute :tomcat_service, kind_of: String, default: 'tomcat7'
       attribute :tomcat_webapp_dir, kind_of: String, default: '/var/lib/tomcat7/webapps'
       attribute :version, kind_of: String, default: '2.16'
+      attribute :log_level, kind_of: String, default: 'debug'
+      attribute :log_dir, kind_of: String, default: '/var/log/ohmage'
+      attribute :data_dir, kind_of: String, default: '/var/lib/ohmage'
     end
   end
 end

@@ -25,3 +25,9 @@ end
 execute 'add ohmage db' do
   command "sleep 5s; /usr/bin/mysql -h 127.0.0.1 -uroot -pchangeme -e \"CREATE DATABASE ohmage; GRANT ALL ON ohmage.* to 'ohmage' identified by 'ohmagepassword';\""
 end
+
+ohmage 'default' do
+  endpoint 'app'
+  db_user 'ohmage'
+  db_password 'ohmagepassword'
+end

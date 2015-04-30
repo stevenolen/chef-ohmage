@@ -1,5 +1,5 @@
 require 'chef/provider/lwrp_base'
-#require_relative 'helpers'
+# require_relative 'helpers'
 
 class Chef
   class Provider
@@ -12,10 +12,18 @@ class Chef
       end
 
       # Mix in helpers from libraries/helpers.rb
-      #include OhmageCookbook::Helpers
+      # include OhmageCookbook::Helpers
 
       action :create do
-        # nil
+        # ohmage conf file template
+        template "#{new_resource.instance}: create ohmage conf" do
+          cookbook 'ohmage'
+          path '/etc/ohmage.conf'
+          source 'ohmage.conf.erb'
+          variables(
+            resource: new_resource
+          )
+        end
       end
     end
   end
