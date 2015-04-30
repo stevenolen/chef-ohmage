@@ -1,40 +1,28 @@
 # ohmage-cookbook
 
-TODO: Enter the cookbook description here.
+LWRP for installing an ohmage server instance.
 
 ## Supported Platforms
 
 TODO: List your supported platforms.
 
-## Attributes
-
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['ohmage']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
-
 ## Usage
 
-### ohmage::default
+### ohmage LWRP
 
-Include `ohmage` in your node's `run_list`:
+Include an ohmage block in your wrapper cookbook. It should be noted that ohmage **requires** tomcat to run, but this cookbook makes no claim on
+installing tomcat (since maybe you really want to rely on the existing tomcat cookbook). Additionally, this cookbook will not maintain mysql (which is
+again, required for use). Take a look at the fixtures cookbook for clean-system deployment example.
 
-```json
-{
-  "run_list": [
-    "recipe[ohmage::default]"
-  ]
-}
+```ruby
+ohmage 'default' do
+  endpoint 'app' # defaults to app
+  db_host '127.0.0.1'
+  db_name 'ohmage'
+  db_user 'ohmage'
+  db_password 'ohmagepassword'
+  tomcat_webapps_dir '/var/lib/tomcat7/webapps'
+end
 ```
 
 ## License and Authors
